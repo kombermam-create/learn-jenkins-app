@@ -3,13 +3,13 @@ pipeline {
 
    stages{
 
-    stage("Show env"){
+    stage('Show env'){
         
         steps{
 
-            sh "echo $BRANCH_NAME"
-            sh "echo env.BRANCH_NAME"
-            sh "echo env.BRANCH_IS_PRIMARY"
+            sh 'echo $BRANCH_NAME'
+            sh 'echo env.BRANCH_NAME'
+            sh 'echo env.BRANCH_IS_PRIMARY'
         }
     }
 
