@@ -9,6 +9,9 @@ pipeline {
                     reuseNode true
                 }
             }
+            environment {
+                npm_config_cache = "${WORKSPACE}/.npm-cache"
+            }
             steps {
                 sh '''
                     pwd
