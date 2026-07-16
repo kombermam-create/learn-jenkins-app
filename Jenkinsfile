@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-   stages{
+   stages {
 
     stage('Show env'){
         agent {
@@ -20,6 +20,17 @@ pipeline {
             touch somefolder/somefolder2/somefolder3/text.txt
             '''
             stash includes: 'somefolder/*', name: 'mystash'
+        }
+    }
+     stage('Show env2'){
+        agent {
+            docker {
+                image 'johnfmorton/tree-cli'
+            }
+        }
+        steps {
+            unstash 'mystash'
+            sh 'tree .'
         }
     }
 
