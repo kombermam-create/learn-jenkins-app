@@ -23,5 +23,18 @@ pipeline {
                 '''
             }
         }
+        stage("Test app and file"){
+            agent{
+                docker{
+                    image 'node:18-alpine'
+                }
+            }
+            steps{
+                sh 'test -f public/index.html' 
+                sh 'npm --version'
+                sh 'npm test'
+            }
+
+        }
     }
 }
