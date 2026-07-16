@@ -30,6 +30,9 @@ pipeline {
                     reuseNode true
                 }
             }
+            environment {
+                npm_config_cache = "${WORKSPACE}/.npm-cache"
+            }
             steps{
                 sh 'test -f public/index.html' 
                 sh 'npm --version'
