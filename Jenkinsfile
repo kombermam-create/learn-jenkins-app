@@ -30,7 +30,7 @@ pipeline {
         }
         steps {
             unstash 'mystash'
-            sh 'tree .'
+            sh 'tree somefolder'
         }
     }
 
