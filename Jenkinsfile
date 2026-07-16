@@ -23,22 +23,39 @@ pipeline {
                 '''
             }
         }
-        stage("Test app and file"){
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            environment {
-                npm_config_cache = "${WORKSPACE}/.npm-cache"
-            }
-            steps{
-                sh 'test -f public/index.html' 
-                sh 'npm --version'
-                sh 'npm test'
-            }
+        stage("Tests")
+        {
+            parallel{
+                
+                stage("Test app and file"){
+                    agent{
+                        docker{
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    environment {
+                        npm_config_cache = "${WORKSPACE}/.npm-cache"
+                    }
+                    steps{
+                        sh 'test -f public/index.html' 
+                        sh 'npm --version'
+                        sh 'npm test'
+                    }
 
+                }
+                stage("Bogdans stage")
+                {
+                    
+                    steps{
+                        sh "echo hello world"
+                    }
+
+                }
+                
+
+
+            }
         }
 
     }
