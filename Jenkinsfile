@@ -9,20 +9,20 @@ pipeline {
                 image 'alpine:latest'
             }
         }
-        steps{
+        steps {
             sh '''
-            mkdir somefolder
+            mkdir -p somefolder
             touch somefolder/somefile
             touch somefolder/somefile2
             touch somefolder/somefile3
-            mkdir somefolder/somefolder2
-            mkdir somefolder/somefolder2/somefolder3
+            mkdir -p somefolder/somefolder2
+            mkdir -p somefolder/somefolder2/somefolder3
             touch somefolder/somefolder2/somefolder3/text.txt
             '''
             stash includes: 'somefolder/*', name: 'mystash'
         }
     }
-     stage('Show env2'){
+    stage('Show env2'){
         agent {
             docker {
                 image 'johnfmorton/tree-cli'
