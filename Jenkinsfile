@@ -4,17 +4,22 @@ pipeline {
    stages{
 
     stage('Show env'){
-        environment {
-            NAME = credentials("name")
+        agent {
+            docker {
+                image 'alpine:latest'
+            }
         }
         steps{
-
-            sh 'echo $BRANCH_NAME'
-            sh 'echo $BRANCH_IS_PRIMARY'
-            sh "echo $NAME"
-            sh 'echo $NAME > secret.txt'
-            sh 'cat secret.txt'
-
+            sh '''
+            mkdir somefolder
+            touch somefolder/somefile
+            touch somefolder/somefile2
+            touch somefolder/somefile3
+            mkdir somefolder/somefolder2
+            mkdir somefolder/somefolder2/somefolder3
+            touch somefolder/somefolder2/somefolder3/text.txt
+            '''
+            stash includes: 'somefolder/*', name: 'mystash'
         }
     }
 
