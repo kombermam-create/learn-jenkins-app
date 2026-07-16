@@ -19,7 +19,7 @@ pipeline {
             mkdir -p somefolder/somefolder2/somefolder3
             touch somefolder/somefolder2/somefolder3/text.txt
             '''
-            stash includes: 'somefolder/*', name: 'mystash'
+            stash includes: 'somefolder/**', name: 'mystash'
         }
     }
     stage('Show env2'){
@@ -30,6 +30,8 @@ pipeline {
         }
         steps {
             unstash 'mystash'
+            sh 'find somefolder -type f'
+            sh 'ls -la somefolder'
             sh 'tree somefolder'
         }
     }
