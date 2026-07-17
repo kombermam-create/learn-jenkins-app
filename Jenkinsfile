@@ -1,40 +1,30 @@
 pipeline {
     agent any
-
-   stages {
-
-    stage('Show env'){
-        agent {
-            docker {
-                image 'alpine:latest'
+    options {
+        preserveStashes(buildCount: 5)
+    }
+    stages {
+        stage('Build') {
+            steps {
+                mkdir -p build
+                sh 'echo "Building..." > build/build.log' 
+                stash includes: 'build/build.log', name: 'build-log'
             }
         }
-        steps {
-            sh '''
-            mkdir -p somefolder
-            touch somefolder/somefile
-            touch somefolder/somefile2
-            touch somefolder/somefile3
-            mkdir -p somefolder/somefolder2
-            mkdir -p somefolder/somefolder2/somefolder3
-            touch somefolder/somefolder2/somefolder3/text.txt
-            '''
-            stash includes: 'somefolder/**', name: 'mystash'
-        }
-    }
-    stage('Show env2'){
-        agent {
-            docker {
-                image 'johnfmorton/tree-cli'
+        stage('Test') {
+            steps {
+                unstash 'build-log'
+                ls -la
+                sh 'cat build/build.log'
+                echo 'Running tests...'
             }
         }
-        steps {
-            unstash 'mystash'
-            sh 'find somefolder -type f'
-            sh 'ls -la somefolder'
-            sh 'tree somefolder'
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+                unstash 'build-log'
+                ls -la
+            }
         }
     }
-
-   }
 }
