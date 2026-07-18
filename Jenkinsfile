@@ -11,6 +11,13 @@ pipeline {
                 script {
                     // BRANCH_NAME доступна переважно в Multibranch Pipeline
                     def branchName = env.BRANCH_NAME
+                    sh '''
+                        echo "Current directory:"
+                        pwd
+
+                        echo "Files:"
+                        ls -la
+                    '''
 
                     // Docker tag не може містити "/", наприклад feature/login.
                     // feature/login -> feature-login
